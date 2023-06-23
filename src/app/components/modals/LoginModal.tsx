@@ -1,22 +1,26 @@
 'use client';
 
 import React from 'react';
-import { AiFillGithub } from 'react-icons/ai';
-import { FaGithub, FaGoogle } from 'react-icons/fa';
-import { useCallback, useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
+import useLoginModal from '@/app/hooks/useLoginModal';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
-import axios from 'axios';
-import { error } from 'console';
-import Modal from './Modal';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { AiFillGithub } from 'react-icons/ai';
+import { FcGoogle } from 'react-icons/fc';
+import Button from '../Button';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
-import toast from 'react-hot-toast';
-import Button from '../Button';
+import Modal from './Modal';
 
-const RegisterModal = () => {
+const LoginModal = () => {
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -25,7 +29,6 @@ const RegisterModal = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: '',
       email: '',
       password: '',
     },
@@ -34,30 +37,36 @@ const RegisterModal = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
-    axios
-      .post('/api/register', data)
-      .then(() => {
-        registerModal.onClose();
+    signIn('credentials', { ...data, redirect: false })
+      .then((res) => {
+        console.log(res);
+
+        if (res?.ok) {
+          toast.success('Logged in');
+          router.refresh();
+          loginModal.onClose();
+        }
+
+        if (res?.error) {
+          toast.error(res.error);
+        }
       })
       .catch((error) => {
         toast.error('Something went wrong. Please try again.');
       })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .finally(() => setIsLoading(false));
   };
 
+  const handlePasswordOnKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.key === 'Enter') {
+      handleSubmit(onSubmit)();
+    }
+  };
   const bodyContent = (
     <div className='flex flex-col gap-4'>
-      <Heading title='Welcome to Airbnb' subtitle='Create an account!' />
-      <Input
-        id='name'
-        label='Name'
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        required
-      />
+      <Heading title='Welcome back' subtitle='Login to your account!' />
       <Input
         id='email'
         label='Email'
@@ -84,7 +93,7 @@ const RegisterModal = () => {
       <Button
         outline
         label='Continue with Google'
-        icon={FaGoogle}
+        icon={FcGoogle}
         onClick={() => {}}
       />
       <Button
@@ -110,10 +119,10 @@ const RegisterModal = () => {
   return (
     <Modal
       disabled={isLoading}
-      isOpen={registerModal.isOpen}
-      title='Register'
-      actionLabel='Continue'
-      onClose={registerModal.onClose}
+      isOpen={loginModal.isOpen}
+      title='Login'
+      actionLabel='Sign in'
+      onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
@@ -121,4 +130,4 @@ const RegisterModal = () => {
   );
 };
 
-export default RegisterModal;
+export default LoginModal;

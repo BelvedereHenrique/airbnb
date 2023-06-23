@@ -9,6 +9,7 @@ export const Logo = () => {
       className='hidden cursor-pointer md:block'
       height={100}
       width={100}
+      priority={false}
     />
   );
 };
