@@ -1,19 +1,18 @@
 'use client';
 
-import React from 'react';
-import { AiFillGithub } from 'react-icons/ai';
-import { FaGithub, FaGoogle } from 'react-icons/fa';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { AiFillGithub } from 'react-icons/ai';
+import { FaGoogle } from 'react-icons/fa';
 
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import axios from 'axios';
-import { error } from 'console';
-import Modal from './Modal';
-import Heading from '../Heading';
-import Input from '../inputs/Input';
+import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import Button from '../Button';
+import Heading from '../Heading';
+import Input from '../inputs/Input';
+import Modal from './Modal';
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
@@ -85,13 +84,13 @@ const RegisterModal = () => {
         outline
         label='Continue with Google'
         icon={FaGoogle}
-        onClick={() => {}}
+        onClick={() => signIn('google')}
       />
       <Button
         outline
         label='Continue with Github'
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => signIn('github')}
       />
       <div className='mt-4 text-center font-light text-neutral-500'>
         <div className='flex flex-row items-center justify-center gap-2'>
