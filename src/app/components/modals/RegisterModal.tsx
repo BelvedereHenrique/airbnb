@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { AiFillGithub } from 'react-icons/ai';
-import { FaGoogle } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import axios from 'axios';
@@ -22,6 +22,9 @@ const RegisterModal = () => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
+    setError,
+    clearErrors,
   } = useForm<FieldValues>({
     defaultValues: {
       name: '',
@@ -30,20 +33,49 @@ const RegisterModal = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
+
+    if (!isValidEmail(data.email)) {
+      toast.error('Please enter a valid email address.');
+      setError('email', {
+        type: 'manual',
+        message: 'Please enter a valid email address.',
+      });
+
+      setIsLoading(false);
+      return;
+    }
 
     axios
       .post('/api/register', data)
       .then(() => {
+        toast.success('Registered successfully. Please log in.');
         registerModal.onClose();
       })
       .catch((error) => {
-        toast.error('Something went wrong. Please try again.');
+        if (error.response.data.message) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error('Something went wrong. Please try again.');
+        }
       })
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  //onBlur
+  const onEmailBlur = () => {
+    const email = getValues('email');
+    if (email && !isValidEmail(email)) {
+      setError('email', {
+        type: 'manual',
+        message: 'Please enter a valid email address.',
+      });
+      return;
+    }
+    clearErrors('email');
   };
 
   const bodyContent = (
@@ -63,6 +95,7 @@ const RegisterModal = () => {
         disabled={isLoading}
         register={register}
         errors={errors}
+        onBlur={onEmailBlur}
         required
       />
       <Input
@@ -83,7 +116,7 @@ const RegisterModal = () => {
       <Button
         outline
         label='Continue with Google'
-        icon={FaGoogle}
+        icon={FcGoogle}
         onClick={() => signIn('google')}
       />
       <Button
@@ -121,3 +154,7 @@ const RegisterModal = () => {
 };
 
 export default RegisterModal;
+
+function isValidEmail(email: string) {
+  return /\S+@\S+\.\S+/.test(email);
+}
