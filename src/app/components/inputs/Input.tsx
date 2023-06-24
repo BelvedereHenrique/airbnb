@@ -12,6 +12,7 @@ interface InputProps {
   required?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
+  onBlur?: () => void;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -23,6 +24,7 @@ const Input: React.FC<InputProps> = ({
   required = false,
   register,
   errors,
+  onBlur,
 }) => {
   return (
     <div className='relative w-full'>
@@ -38,6 +40,7 @@ const Input: React.FC<InputProps> = ({
         {...register(id, { required })}
         placeholder=' '
         type={type}
+        onBlur={onBlur}
         className={`peer w-full rounded-md border-2 bg-white p-4 pt-6 font-light outline-none transition disabled:cursor-not-allowed disabled:opacity-70
         ${formatPrice ? 'pl-9' : 'pl-4'}
         ${errors[id] ? 'border-rose-500' : 'border-neutral-300'}

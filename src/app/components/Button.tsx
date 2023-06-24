@@ -28,6 +28,7 @@ const Button: React.FC<ButtonProps> = ({
       ${outline ? 'bg-white' : 'bg-rose-500'}
       ${outline ? 'border-black' : 'border-rose-500'}
       ${outline ? 'text-black' : 'text-white'}
+      ${outline ? 'hover:bg-neutral-100' : ''}
       ${small ? 'py-1' : 'py-3'}
       ${small ? 'text-sm' : 'text-md'}
       ${small ? 'font-light' : 'font-semibold'}
