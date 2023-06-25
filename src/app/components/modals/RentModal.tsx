@@ -84,7 +84,7 @@ export const RentModal = () => {
       />
       <div className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto scrollbar'>
         {categories.map((item) => (
-          <div className='col-span-1 scrollbar' key={item.label}>
+          <div className='col-span-1' key={item.label}>
             <CategoryInput
               onClick={(category) => setCustomValue('category', category)}
               selected={category === item.label}
