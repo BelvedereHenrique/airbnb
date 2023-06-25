@@ -11,10 +11,10 @@ interface ModalProps {
   title?: string;
   body?: React.ReactElement;
   footer?: React.ReactElement;
-  actionLabel: string;
+  primaryActionLabel: string;
   disabled?: boolean;
   secondaryAction?: () => void;
-  secondaryLabel?: string;
+  secondaryActionLabel?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -24,10 +24,10 @@ const Modal: React.FC<ModalProps> = ({
   title,
   body,
   footer,
-  actionLabel: primaryActionLabel,
+  primaryActionLabel: primaryActionLabel,
   disabled,
   secondaryAction,
-  secondaryLabel: secondaryActionLabel,
+  secondaryActionLabel: secondaryActionLabel,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const animationDuration = 300;

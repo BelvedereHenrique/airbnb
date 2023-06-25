@@ -20,12 +20,12 @@ body,
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
-    background: rgb(253 164 175/ 0.2);
+    background: rgb(244 63 94 / 0.25);
     border-radius: 100vh;
     border: 3px solid #f6f7ed;
   }
 
   .scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgb(253 164 175);
+    background: rgb(244 63 94 /0.75);
   }
 }
