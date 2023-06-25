@@ -29,3 +29,9 @@ body,
     background: rgb(244 63 94 /0.75);
   }
 }
+.leaflet-bottom,
+.leaflet-control,
+.leaflet-pane,
+.leaflet-top {
+  z-index: 0 !important;
+}
