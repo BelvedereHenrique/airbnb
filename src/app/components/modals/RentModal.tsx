@@ -9,6 +9,7 @@ import CategoryInput from '../inputs/CategoryInput';
 import Counter from '../inputs/Counter';
 import CountrySelect from '../inputs/CountrySelect';
 import ImageUpload from '../inputs/ImageUpload';
+import Input from '../inputs/Input';
 import { categories } from '../navbar/Categories';
 import Modal from './Modal';
 
@@ -25,6 +26,7 @@ export const RentModal = () => {
   const rentModal = useRentModal();
 
   const [step, setStep] = useState(STEPS.CATEGORY);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -116,6 +118,34 @@ export const RentModal = () => {
       </div>
     </div>
   );
+
+  if (step === STEPS.DESCRIPTION) {
+    bodyContent = (
+      <div className='flex flex-col gap-8'>
+        <Heading
+          title='How would you describe your place?'
+          subtitle='Short works best!'
+        />
+        <Input
+          id='title'
+          label='Title'
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+        />
+        <hr />
+        <Input
+          id='description'
+          label='Description'
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+        />
+      </div>
+    );
+  }
+  if (step === STEPS.PRICE) {
+  }
 
   if (step === STEPS.LOCATION) {
     bodyContent = (
