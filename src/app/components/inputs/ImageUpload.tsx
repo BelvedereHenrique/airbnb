@@ -31,7 +31,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
           maxFiles: 1,
           sources: ['local'],
           resourceType: 'image',
-          clientAllowedFormats: ['png', 'jpeg'],
+          clientAllowedFormats: ['png', 'jpeg', 'jpg'],
         }}
       >
         {({ open }) => {
