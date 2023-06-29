@@ -29,6 +29,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
         uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
         options={{
           maxFiles: 1,
+          sources: ['local'],
+          resourceType: 'image',
+          clientAllowedFormats: ['png', 'jpeg'],
         }}
       >
         {({ open }) => {
