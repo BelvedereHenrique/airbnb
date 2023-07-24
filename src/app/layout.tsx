@@ -24,6 +24,10 @@ export default async function RootLayout({
   return (
     <html lang='en'>
       <body className={font.className}>
+        <div className='p-10 bg-red-600 flex justify-center text-slate-100 font-bold'>
+          THIS IS NOT REAL AIRBNB, THIS IS A SHOWCASE PROJECT. PLEASE DO NOT USE
+          REAL INFORMATION
+        </div>
         <ToastProvider />
         <LoginModal />
         <RegisterModal />
